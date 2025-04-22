@@ -1,0 +1,4 @@
+venv
+mlruns
+src/dataset
+src/best_model_path.txt

@@ -1,0 +1,42 @@
+stages:
+  download:
+    cmd: python src/download.py
+    deps:
+    - src/config.yaml
+    outs:
+    - src/dataset/enhanced_anxiety_dataset.csv
+    - src/dataset/family_anxiety_14_dataset.csv
+  preprocess:
+    cmd: python src/preprocess.py
+    deps:
+    - src/config.yaml
+    - src/dataset/enhanced_anxiety_dataset.csv
+    outs:
+    - src/dataset/cleared_data.csv
+  split_dataset:
+    cmd: python src/split_dataset.py
+    deps:
+    - src/config.yaml
+    - src/dataset/cleared_data.csv
+    outs:
+    - src/dataset/test_dataset.csv
+    - src/dataset/train_dataset.csv
+  train_model:
+    cmd: python src/train_model.py
+    deps:
+    - src/config.yaml
+    - src/dataset/test_dataset.csv
+    - src/dataset/train_dataset.csv
+    outs:
+    - src/best_model_path.txt
+  test_model:
+    cmd: python src/test_model.py
+    deps:
+    - src/best_model_path.txt
+    - src/config.yaml
+    - src/dataset/test_dataset.csv
+metrics:
+- dvclive/metrics.json
+plots:
+- dvclive/plots/metrics:
+    x: step

@@ -1,0 +1,16 @@
+download:
+  dataset_dir: "src/dataset/"
+preprocess:
+  origin_dataset_path: "src/dataset/enhanced_anxiety_dataset.csv"
+  result_dataset_path: "src/dataset/cleared_data.csv"
+split_dataset:
+  dataset_path: "src/dataset/cleared_data.csv"
+  train_dataset_path: "src/dataset/train_dataset.csv"
+  test_dataset_path: "src/dataset/test_dataset.csv"
+train_model:
+  train_dataset_path: "src/dataset/train_dataset.csv"
+  test_dataset_path: "src/dataset/test_dataset.csv"
+  best_model_path: "src/best_model_path.txt"
+test_model:
+  test_dataset_path: "src/dataset/test_dataset.csv"
+  best_model_path: "src/best_model_path.txt"

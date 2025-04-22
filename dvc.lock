@@ -1,0 +1,89 @@
+schema: '2.0'
+stages:
+  download:
+    cmd: python src/download.py
+    deps:
+    - path: src/config.yaml
+      hash: md5
+      md5: 4343ccb8fe87e96f04445b7e5e74afc4
+      size: 627
+    outs:
+    - path: src/dataset/enhanced_anxiety_dataset.csv
+      hash: md5
+      md5: d294521fbf1bf05daf0b9f2ee0a318a6
+      size: 741758
+    - path: src/dataset/family_anxiety_14_dataset.csv
+      hash: md5
+      md5: 47bd141ea6f5ea956502d2bb10b4a49e
+      size: 733671
+  preprocess:
+    cmd: python src/preprocess.py
+    deps:
+    - path: src/config.yaml
+      hash: md5
+      md5: 4343ccb8fe87e96f04445b7e5e74afc4
+      size: 627
+    - path: src/dataset/enhanced_anxiety_dataset.csv
+      hash: md5
+      md5: d294521fbf1bf05daf0b9f2ee0a318a6
+      size: 741758
+    outs:
+    - path: src/dataset/cleared_data.csv
+      hash: md5
+      md5: 321b14e30565b926b6eea178e8ab0d4d
+      size: 2637874
+  split_dataset:
+    cmd: python src/split_dataset.py
+    deps:
+    - path: src/config.yaml
+      hash: md5
+      md5: 4343ccb8fe87e96f04445b7e5e74afc4
+      size: 627
+    - path: src/dataset/cleared_data.csv
+      hash: md5
+      md5: 321b14e30565b926b6eea178e8ab0d4d
+      size: 2637874
+    outs:
+    - path: src/dataset/test_dataset.csv
+      hash: md5
+      md5: 8ab0ddbbbfd61e7400be526f05bdd817
+      size: 650985
+    - path: src/dataset/train_dataset.csv
+      hash: md5
+      md5: f3274ed2313d3ece937afceb55727d76
+      size: 1953305
+  train_model:
+    cmd: python src/train_model.py
+    deps:
+    - path: src/config.yaml
+      hash: md5
+      md5: 4343ccb8fe87e96f04445b7e5e74afc4
+      size: 627
+    - path: src/dataset/test_dataset.csv
+      hash: md5
+      md5: 8ab0ddbbbfd61e7400be526f05bdd817
+      size: 650985
+    - path: src/dataset/train_dataset.csv
+      hash: md5
+      md5: f3274ed2313d3ece937afceb55727d76
+      size: 1953305
+    outs:
+    - path: src/best_model_path.txt
+      hash: md5
+      md5: ea598894a9e502a38c2fbf0a99b52ec6
+      size: 101
+  test_model:
+    cmd: python src/test_model.py
+    deps:
+    - path: src/best_model_path.txt
+      hash: md5
+      md5: ea598894a9e502a38c2fbf0a99b52ec6
+      size: 101
+    - path: src/config.yaml
+      hash: md5
+      md5: 4343ccb8fe87e96f04445b7e5e74afc4
+      size: 627
+    - path: src/dataset/test_dataset.csv
+      hash: md5
+      md5: 8ab0ddbbbfd61e7400be526f05bdd817
+      size: 650985
